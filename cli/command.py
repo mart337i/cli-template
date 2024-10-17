@@ -3,9 +3,6 @@ import os
 import sys
 from pathlib import Path
 
-from cli.base_cli import base_cli
-from cli.interactive_shell import interactive_cli
-
 commands = {}
 
 class Command:
