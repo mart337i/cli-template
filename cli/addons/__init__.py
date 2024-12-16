@@ -1,1 +1,1 @@
-from . import scaffold
+# from . import <Command file name>
