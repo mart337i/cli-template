@@ -118,7 +118,3 @@ Error: Unknown command 'unknown'.
 ## License
 
 Open source under the MIT License.
-
---- 
-
-This version trims unnecessary details while keeping all key functionality and usage examples clear and concise. Let me know if you need further edits!
