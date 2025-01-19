@@ -1,17 +1,5 @@
-import sys
-import logging
-
-from cli.command import execute_command 
-
-def main():
-    """
-    Entry point for the Odoo CLI application.
-    Run in shell argument mode or interactive mode based on the input.
-    """
-    execute_command()
-
+__import__('os').environ['TZ'] = 'UTC'
+import cli
 
 if __name__ == "__main__":
-    main()
-
-
+    cli.cli_base.execute_command()

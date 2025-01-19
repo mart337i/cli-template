@@ -1,93 +1,88 @@
 # CLI Tool Template
 
-This project provides a simple and extensible template for building command-line interfaces (CLI) in Python, using only standard libraries. It is designed to be lightweight, user-friendly, and easy to expand with new commands.
+A simple and extensible template for building command-line interfaces (CLI) in Python. Lightweight, user-friendly, and easy to expand with new commands.
 
 ---
 
 ## Features
 
-- **Dynamic Command Registration**: 
-  Subclass the `Command` base class to automatically register new commands.
-  
-- **Built-in Help**: 
-  Includes a `help` command to list all available commands and display usage information.
-
-- **Extensible**: 
-  Easily add new commands by defining a subclass of `Command` and implementing the `run` method.
-
-- **Error Handling**: 
-  Provides clear feedback for unknown or missing commands.
-
-- **Pure Standard Library**: 
-  Uses only Python 3.12 standard library modules, ensuring compatibility and simplicity.
-
----
-
-## Installation
-
-No installation is required! Just clone or download the repository and execute the script using Python 3.12 or later.
+- **Dynamic Command Registration**: Subclass `Command` to automatically register new commands.
+- **Addons Support**: Dynamically load commands from an `addons` directory.
+- **Built-in Help**: Lists all available commands and their usage.
+- **Extensible**: Add commands by subclassing `Command` and implementing the `run` method.
+- **Namespace Package**: The `cli` package is a namespace package for easy extension.
 
 ---
 
 ## Usage
 
-Run the CLI tool with the desired command:
+Run the CLI tool:
 
 ```bash
 python cli_tool.py <command> [arguments]
 ```
 
-### Built-in Commands
+### Example Commands
 
-1. **help**: Lists all available commands and their descriptions.
-   ```bash
-   python cli_tool.py help
-   ```
-   
-2. **Custom Commands**: Any additional commands you define will appear in the help menu automatically.
+- **help**: Lists all commands.
+  ```bash
+  python cli_tool.py help
+  ```
+
+- **Custom Commands**: New commands appear in the help menu.
 
 ---
 
 ## Adding Commands
 
-To add a new command:
+### Direct Commands
 
-1. Create a new class that subclasses `Command`.
-2. Optionally, set a `name` attribute. If not set, the class name (in lowercase) is used as the command name.
-3. Implement the `run(self, args: list[str])` method to define the command's behavior.
-4. Add a docstring to describe the command. This will appear in the help menu.
-
-### Example
-
-Here’s an example of adding a `greet` command:
+Subclass `Command` to define new commands. Example:
 
 ```python
 class Greet(Command):
-    """Greet the user with a friendly message."""
+    """Greet the user."""
     def run(self, args: list[str]) -> None:
         name = args[0] if args else "world"
         print(f"Hello, {name}!")
 ```
 
-With this command added, you can now run:
-
+Run it:
 ```bash
 python cli_tool.py greet Alice
 # Output: Hello, Alice!
 ```
 
+### Addons Commands
+
+Add commands dynamically from an `addons` directory. Example structure:
+
+```
+addons/
+    my_command/
+        __init__.py
+        __manifest__.py
+```
+
+**`my_command/__init__.py`**:
+```python
+class MyCommand(Command):
+    """My custom addon command."""
+    def run(self, args: list[str]) -> None:
+        print("Running my custom command!")
+```
+
+Commands are automatically discovered when `addons` is loaded.
+
 ---
 
-## Code Structure
+## Configuration
 
-- **`Command` Base Class**: 
-  The foundation for all commands. Implements dynamic registration and default behaviors.
-  
-- **`commands` Dictionary**: 
-  Stores mappings of command names to their corresponding classes.
-  
-- **`execute_command` Function**: 
-  Parses CLI arguments and invokes the appropriate command.
+By default, addons are loaded from the `addons` directory relative to the script. Override with:
+
+```bash
+python cli_tool.py --addons-path=/custom/path <command>
+```
 
 ---
 
@@ -98,16 +93,18 @@ $ python cli_tool.py help
 CLI Tool - Use 'cli_tool.py <command> --help' for command-specific help.
 
 Available commands:
-  help   Display the list of available commands.
+  help        Display the list of available commands.
+  greet       Greet the user.
+  mycommand   My custom addon command.
 
 $ python cli_tool.py greet John
 Hello, John!
 
+$ python cli_tool.py mycommand
+Running my custom command!
+
 $ python cli_tool.py unknown
 Error: Unknown command 'unknown'.
-
-$ python cli_tool.py greet --help
-Greet the user with a friendly message.
 ```
 
 ---
@@ -120,4 +117,8 @@ Greet the user with a friendly message.
 
 ## License
 
-This project is open source and available under the MIT License.
+Open source under the MIT License.
+
+--- 
+
+This version trims unnecessary details while keeping all key functionality and usage examples clear and concise. Let me know if you need further edits!
