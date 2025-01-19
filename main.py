@@ -1,5 +1,5 @@
 __import__('os').environ['TZ'] = 'UTC'
-import cli
+import clix
 
 if __name__ == "__main__":
-    cli.cli_base.execute_command()
+    clix.cli_base.execute_command()

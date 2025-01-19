@@ -1,4 +1,4 @@
-from cli import Command
+from clix import Command
 
 class TEST(Command):
     """Greet the user with a friendly message."""

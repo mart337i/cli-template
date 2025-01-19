@@ -69,19 +69,26 @@ def load_addon_commands(addons_path: str):
     if not addons_path.is_dir():
         raise ValueError(f"Invalid addons directory: {addons_path}")
 
+    # Add the addons path to sys.path to allow dynamic imports
     sys.path.append(str(addons_path))
 
+    # Iterate over each module directory in the addons path
     for module_dir in addons_path.iterdir():
-        if module_dir.is_dir() and (module_dir / '__manifest__.py').exists():
-            try:
-                module_name = module_dir.name
-                __import__(module_name)
-                logging.info(f"Loaded commands from module: {module_name}")
-            except Exception as e:
-                logging.error(f"Failed to load commands from module '{module_dir}': {e}")
+        if module_dir.is_dir() and (module_dir / '__init__.py').exists():
+            # Check if a CLI-specific directory exists inside the module
+            cli_dir = module_dir / "cli"
+            if cli_dir.is_dir():
+                try:
+                    # Dynamically import the CLI module
+                    cli_module = f"{module_dir.name}.cli"
+                    __import__(cli_module)
+                    logging.info(f"Successfully loaded CLI module: {cli_module}")
+                except Exception as e:
+                    logging.error(f"Failed to load CLI module from {module_dir}: {e}")
+            else:
+                logging.warning(f"No CLI directory found in {module_dir}")
         else:
             logging.warning(f"Skipping non-module directory: {module_dir}")
-
 def execute_command():
     args = sys.argv[1:]
 
