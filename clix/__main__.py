@@ -1,3 +1,3 @@
-from .cli_base.command import execute_command
+from clix.cli.command import execute_command
 
 execute_command()

@@ -1,9 +1,9 @@
-import pkgutil
-import os.path
+import sys
+import os
+from pkgutil import extend_path
+from pathlib import Path
 
-__path__ = [
-    os.path.abspath(path)
-    for path in pkgutil.extend_path(__path__, __name__)
-]
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+__path__ = extend_path(__path__, __name__)
 
-from .cli_base.command import Command
+from . import cli
